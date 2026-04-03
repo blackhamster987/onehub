@@ -135,6 +135,6 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Groq API Configuration
-GROQ_API_KEY2 = "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"
+GROQ_API_KEY2 = os.environ.get("GROQ_API_KEY")
 GROQ_MODEL2 = "meta-llama/llama-4-scout-17b-16e-instruct"
 GROQ_API_URL2 = "https://api.groq.com/openai/v1/chat/completions"
