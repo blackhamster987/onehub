@@ -1,0 +1,57 @@
+{% extends 'ecommerce_admin/base.html' %}
+
+{% block title %}Register - Grocery Admin{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-user-plus"></i> Ecommerce Admin Registration</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-user"></i> Full Name</label>
+                        {{ form.full_name }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-envelope"></i> Email</label>
+                        {{ form.email }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-phone"></i> Phone Number</label>
+                        {{ form.phone_number }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-lock"></i> Password</label>
+                        {{ form.password }}
+                        <small class="text-muted">Minimum 6 characters</small>
+                    </div>
+
+                    
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-user-check"></i> Register
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="mb-0">Already have an account?
+                        <a href="{% url 'ecommerce_login' %}" class="text-decoration-none">
+                            <i class="fas fa-sign-in-alt"></i> Login here
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

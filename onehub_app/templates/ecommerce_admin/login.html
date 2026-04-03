@@ -1,0 +1,45 @@
+{% extends 'ecommerce_admin/base.html' %}
+
+{% block title %}Login - Grocery Admin{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-sign-in-alt"></i> Ecommerce Admin Login</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="Enter your password"
+                            required>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="mb-0">Don't have an account?
+                        <a href="{% url 'ecommerce_register' %}" class="text-decoration-none">
+                            <i class="fas fa-user-plus"></i> Register here
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

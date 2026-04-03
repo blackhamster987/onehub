@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Edit Room</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --accent: #6366f1;
+    --accent-grad: linear-gradient(135deg, #6366f1, #a855f7);
+    --bg: #f8fafc;
+    --card: rgba(255,255,255,0.85);
+    --text: #1e293b;
+    --muted: #64748b;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at top left, #eef2ff, transparent 50%),
+                radial-gradient(circle at bottom right, #faf5ff, transparent 50%),
+                var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+/* Card */
+.card {
+    width: 100%;
+    max-width: 520px;
+    background: var(--card);
+    backdrop-filter: blur(14px);
+    border-radius: 22px;
+    padding: 32px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+    animation: slideUp 0.7s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    margin: 0 0 6px;
+    font-size: 1.6rem;
+    background: var(--accent-grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+}
+
+/* Image preview */
+.image-preview {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.image-preview img {
+    width: 90px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 12px;
+    cursor: pointer;
+    border: 1px solid #e5e7eb;
+    transition: transform 0.3s ease;
+}
+
+.image-preview img:hover {
+    transform: scale(1.08);
+}
+
+.image-preview span {
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+/* Inputs */
+.group {
+    margin-bottom: 18px;
+}
+
+label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    font-size: 0.95rem;
+    outline: none;
+    background: white;
+}
+
+input:focus, select:focus {
+    border-color: var(--accent);
+}
+
+/* Buttons */
+.actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 14px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-save {
+    background: var(--accent-grad);
+    color: white;
+}
+
+.btn-back {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal img {
+    max-width: 90%;
+    max-height: 85%;
+    border-radius: 16px;
+    animation: zoomIn 0.4s ease;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>Edit Room</h2>
+    <p class="subtitle">Update room details & availability</p>
+
+    {% if room.image %}
+    <div class="image-preview">
+        <img src="{{ room.image.url }}" onclick="openModal(this.src)">
+        <span>Click image to preview</span>
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="group">
+            <label>Room Category</label>
+            <select name="category">
+                <option value="family" {% if room.category == 'family' %}selected{% endif %}>Family</option>
+                <option value="bachelor" {% if room.category == 'bachelor' %}selected{% endif %}>Bachelor</option>
+                <option value="deluxe" {% if room.category == 'deluxe' %}selected{% endif %}>Deluxe</option>
+                <option value="suite" {% if room.category == 'suite' %}selected{% endif %}>Suite</option>
+            </select>
+        </div>
+
+        <div class="group">
+            <label>Price per Night</label>
+            <input type="number" name="price_per_night" value="{{ room.price_per_night }}" required>
+        </div>
+
+        <div class="group">
+            <label>Total Rooms</label>
+            <input type="number" name="total_rooms" value="{{ room.total_rooms }}" required>
+        </div>
+
+        <div class="group">
+            <label>Available Rooms</label>
+            <input type="number" name="available_rooms" value="{{ room.available_rooms }}" required>
+        </div>
+
+        <div class="group">
+            <label>Change Image (optional)</label>
+            <input type="file" name="image">
+        </div>
+
+        <div class="actions">
+            <button type="submit" class="btn btn-save">Save Changes</button>
+            <a href="{% url 'hotel_admin_dashboard' %}" class="btn btn-back" style="text-align:center; text-decoration:none;">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<!-- Image Modal -->
+<div class="modal" id="imgModal" onclick="closeModal()">
+    <img id="modalImg">
+</div>
+
+<script>
+function openModal(src) {
+    document.getElementById('modalImg').src = src;
+    document.getElementById('imgModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('imgModal').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

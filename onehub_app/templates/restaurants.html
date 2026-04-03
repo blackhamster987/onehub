@@ -1,0 +1,238 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurants - OneHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff4757;
+            --secondary-color: #2f3542;
+            --text-color: #333;
+            --light-bg: #f4f4f4;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--light-bg);
+            color: var(--text-color);
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--white);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .header p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Grid */
+        .restaurants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .restaurant-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-image {
+            height: 200px;
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ccc;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .restaurant-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .restaurant-detail {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .rating {
+            color: #f1c40f;
+            margin-bottom: 1rem;
+        }
+
+        .order-btn {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .order-btn:hover {
+            background: #e04050;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="{% url 'index' %}" class="logo">OneHub</a>
+        <div class="nav-links">
+            <a href="{% url 'userdashboard' %}">Dashboard</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>Partner Restaurants</h1>
+            <p>Order delicious food from top restaurants near you.</p>
+        </div>
+
+        {% if api_error %}
+        <div class="empty-state">
+            <i class="fas fa-exclamation-triangle fa-3x" style="color: #ff4757; margin-bottom: 1rem;"></i>
+            <h3>Unable to load restaurants</h3>
+            <p>{{ api_error }}</p>
+            <br>
+            <a href="{% url 'restaurants' %}" class="order-btn" style="max-width: 200px; margin: 0 auto;">Retry</a>
+        </div>
+        {% elif not restaurants %}
+        <div class="empty-state">
+            <i class="fas fa-utensils fa-3x" style="color: #ccc; margin-bottom: 1rem;"></i>
+            <h3>No restaurants available currently</h3>
+            <p>Please check back later or try our other services.</p>
+            <br>
+            <a href="{% url 'userdashboard' %}" class="order-btn" style="max-width: 200px; margin: 0 auto;">Back to
+                Dashboard</a>
+        </div>
+        {% else %}
+        <div class="restaurants-grid">
+            {% for restaurant in restaurants %}
+            <div class="restaurant-card">
+                <div class="card-image">
+                    <i class="fas fa-utensils fa-3x"></i>
+                </div>
+                <div class="card-content">
+                    <div class="restaurant-name">{{ restaurant.restaurantName }}</div>
+                    <div class="restaurant-detail">
+                        <i class="fas fa-map-marker-alt"></i> {{ restaurant.address|default:"Location not specified" }}
+                    </div>
+                    <div class="restaurant-detail">
+                        <i class="fas fa-tag"></i> {{ restaurant.type|default:"Multi-cuisine" }}
+                    </div>
+                    <div class="restaurant-detail">
+                        {% if restaurant.parkingLot %}
+                        <i class="fas fa-parking"></i> Parking Available
+                        {% else %}
+                        <i class="fas fa-ban"></i> No Parking
+                        {% endif %}
+                    </div>
+                    <a href="#" class="order-btn" onclick="alert('Order feature coming soon!'); return false;">View
+                        Menu</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+</body>
+
+</html>

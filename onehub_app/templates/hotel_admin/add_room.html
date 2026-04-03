@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Add Room</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --accent: #6366f1;
+    --accent-grad: linear-gradient(135deg, #6366f1, #a855f7);
+    --bg: #f8fafc;
+    --card: rgba(255,255,255,0.85);
+    --text: #1e293b;
+    --muted: #64748b;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at top left, #eef2ff, transparent 50%),
+                radial-gradient(circle at bottom right, #faf5ff, transparent 50%),
+                var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+/* Card */
+.card {
+    width: 100%;
+    max-width: 500px;
+    background: var(--card);
+    backdrop-filter: blur(14px);
+    border-radius: 22px;
+    padding: 32px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+    animation: slideUp 0.6s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    margin: 0 0 6px;
+    font-size: 1.6rem;
+    background: var(--accent-grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 24px;
+}
+
+/* Inputs */
+.group {
+    margin-bottom: 18px;
+}
+
+label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    font-size: 0.95rem;
+    outline: none;
+    background: white;
+}
+
+input:focus, select:focus {
+    border-color: var(--accent);
+}
+
+/* Buttons */
+.actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 14px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-save {
+    background: var(--accent-grad);
+    color: white;
+}
+
+.btn-back {
+    background: #e5e7eb;
+    color: #374151;
+    text-decoration: none;
+    text-align: center;
+    line-height: 44px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>Add Room</h2>
+    <p class="subtitle">Create a new room configuration</p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="group">
+            <label>Room Category</label>
+            <select name="category" required>
+                <option value="family">Family</option>
+                <option value="bachelor">Bachelor</option>
+                <option value="deluxe">Deluxe</option>
+                <option value="suite">Suite</option>
+            </select>
+        </div>
+
+        <div class="group">
+            <label>Price Per Night</label>
+            <input type="number" name="price_per_night" required>
+        </div>
+
+        <div class="group">
+            <label>Total Rooms</label>
+            <input type="number" name="total_rooms" required>
+        </div>
+
+        <div class="group">
+            <label>Available Rooms</label>
+            <input type="number" name="available_rooms" required>
+        </div>
+
+        <div class="group">
+            <label>Room Image</label>
+            <input type="file" name="image">
+        </div>
+
+        <div class="actions">
+            <button type="submit" class="btn btn-save">Add Room</button>
+            <a href="{% url 'hotel_admin_dashboard' %}" class="btn btn-back">Cancel</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

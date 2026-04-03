@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecommerce Owners Management - OneHub Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 260px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-brand h3 {
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-brand small {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 0.9rem 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            font-weight: 500;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-left-color: white;
+            color: white;
+        }
+
+        .sidebar-nav i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead {
+            background: #f7fafc;
+        }
+
+        .table thead th {
+            border: none;
+            color: #4a5568;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            padding: 1rem;
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-color: #e2e8f0;
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending {
+            background: #fef5e7;
+            color: #d68910;
+        }
+
+        .status-approved {
+            background: #d5f4e6;
+            color: #0f7b3f;
+        }
+
+        .status-rejected {
+            background: #fadbd8;
+            color: #b03a2e;
+        }
+
+        .btn-action {
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: none;
+            transition: all 0.2s ease;
+            margin-right: 0.3rem;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-approve {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-approve:hover {
+            background: #38a169;
+        }
+
+        .btn-reject {
+            background: #f56565;
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background: #e53e3e;
+        }
+
+        .btn-delete {
+            background: #fc8181;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #f56565;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #718096;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h3>OneHub<span style="color: rgba(255,255,255,0.7);">.</span></h3>
+            <small>Admin Panel</small>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="{% url 'onehub_admin_dashboard' %}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="{% url 'users_list' %}"><i class="fas fa-users"></i> Users</a></li>
+            <li><a href="{% url 'hotel_owners_list' %}"><i class="fas fa-hotel"></i> Hotel Owners</a></li>
+            <li><a href="{% url 'ecommerce_owners_list' %}"><i class="fas fa-shopping-cart"></i> Ecommerce Owners</a>
+            </li>
+            <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h1><i class="fas fa-shopping-cart me-3"></i>Ecommerce Owners Management</h1>
+        </div>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"
+            style="border-radius: 10px;">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <div class="table-card">
+            {% if ecommerce_admins %}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for admin in ecommerce_admins %}
+                        <tr>
+                            <td><strong>{{ forloop.counter }}</strong></td>
+                            <td><strong>{{ admin.full_name }}</strong></td>
+                            <td>{{ admin.email }}</td>
+                            <td>{{ admin.phone_number }}</td>
+                            <td>
+                                {% if admin.status == 'pending' %}
+                                <span class="status-badge status-pending">Pending</span>
+                                {% elif admin.status == 'approved' %}
+                                <span class="status-badge status-approved">Approved</span>
+                                {% elif admin.status == 'rejected' %}
+                                <span class="status-badge status-rejected">Rejected</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if admin.status != 'approved' %}
+                                <a href="{% url 'approve_ecommerce_owner' admin.id %}"
+                                    class="btn btn-action btn-approve">
+                                    <i class="fas fa-check"></i> Approve
+                                </a>
+                                {% endif %}
+
+                                {% if admin.status != 'rejected' %}
+                                <a href="{% url 'reject_ecommerce_owner' admin.id %}" class="btn btn-action btn-reject">
+                                    <i class="fas fa-times"></i> Reject
+                                </a>
+                                {% endif %}
+
+                                <a href="{% url 'delete_ecommerce_owner' admin.id %}" class="btn btn-action btn-delete"
+                                    onclick="return confirm('Are you sure you want to delete {{ admin.full_name }}?')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-shopping-cart"></i>
+                <h4>No Ecommerce Owners Found</h4>
+                <p class="text-muted">There are no ecommerce admin registrations yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

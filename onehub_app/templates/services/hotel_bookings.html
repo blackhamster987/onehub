@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Hotel Room - OneHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Animate.css for animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+        }
+
+        .hotel-card {
+            transition: all 0.3s ease;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            background: white;
+        }
+
+        .hotel-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .room-card {
+            transition: all 0.2s ease;
+            border: 1px solid #e5e7eb;
+        }
+
+        .room-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .available-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .pulse-available {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.8;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 0.8;
+            }
+        }
+
+        .header-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-control {
+            transition: all 0.3s ease;
+            border: 1px solid #d1d5db;
+        }
+
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .message-alert {
+            animation: slideInDown 0.5s ease;
+        }
+
+        @keyframes slideInDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .hotel-image-container {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .hotel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .hotel-card:hover .hotel-image {
+            transform: scale(1.05);
+        }
+
+        .empty-state {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hotel-card {
+                margin-bottom: 1.5rem;
+            }
+
+            .hotel-image-container {
+                height: 160px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8 fade-in">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="mb-10">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                    <div>
+                        <h1 class="text-4xl font-bold header-gradient mb-2">Book a Hotel Room</h1>
+                        <p class="text-gray-600 text-lg">Choose from our approved hotels and submit your booking request
+                        </p>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <a href="{% url 'my_bookings' %}"
+                            class="btn-primary text-white px-6 py-3 rounded-lg font-medium inline-flex items-center shadow-lg">
+                            <span>View My Bookings</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Filter/Search Bar -->
+                <div class="bg-white rounded-xl p-4 shadow-md mb-6">
+                    <form method="GET" class="flex flex-col md:flex-row md:items-center gap-4">
+                        <div class="flex-1">
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                                <input type="text" placeholder="Search hotels by name, location..."
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <select name="sort" onchange="this.form.submit()"
+                                class="form-control px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Sort by: Recommended</option>
+
+<option value="price_low"
+    {% if current_sort == 'price_low' %}selected{% endif %}>
+    Price: Low to High
+</option>
+
+<option value="price_high"
+    {% if current_sort == 'price_high' %}selected{% endif %}>
+    Price: High to Low
+</option>
+
+<option value="rating"
+    {% if current_sort == 'rating' %}selected{% endif %}>
+    Rating
+</option>
+
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        {% if messages %}
+        <div class="mb-8 message-alert">
+            {% for message in messages %}
+            <div class="rounded-xl p-4 mb-4 flex items-start animate__animated animate__fadeInDown
+                    {% if message.tags == 'error' %}bg-red-50 text-red-800 border-l-4 border-red-500
+                    {% elif message.tags == 'success' %}bg-green-50 text-green-800 border-l-4 border-green-500
+                    {% else %}bg-blue-50 text-blue-800 border-l-4 border-blue-500{% endif %}">
+                <i class="fas 
+                        {% if message.tags == 'error' %}fa-exclamation-circle
+                        {% elif message.tags == 'success' %}fa-check-circle
+                        {% else %}fa-info-circle{% endif %} 
+                        mr-3 mt-0.5"></i>
+                <div>
+                    <p class="font-medium">{{ message }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Hotels List -->
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {% for hotel in hotels %}
+            <div class="hotel-card animate__animated animate__fadeInUp"
+                style="animation-delay: {{ forloop.counter0 }}00ms">
+                <!-- Hotel Image -->
+                <div class="hotel-image-container bg-gradient-to-br from-blue-100 to-purple-100">
+                    {% if hotel.image %}
+                    <img src="{{ hotel.image.url }}" alt="{{ hotel.hotelowner }}" class="hotel-image">
+                    {% else %}
+                    <div class="w-full h-full flex items-center justify-center">
+                        <i class="fas fa-hotel text-5xl text-gray-400"></i>
+                    </div>
+                    {% endif %}
+                    <!-- Hotel Rating Badge -->
+                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
+                        <i class="fas fa-star text-yellow-500 mr-1"></i>
+                        <span class="font-semibold text-gray-800">
+                            {% if hotel.average_rating %}
+                            {{ hotel.average_rating|floatformat:1 }}
+                            {% else %}
+                            New
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-1">{{ hotel.hotelname }}</h3>
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i>
+                                <span>{{ hotel.location }}</span>
+                            </div>
+                            <div class="flex items-center text-gray-600 mt-1">
+                                <i class="fas fa-phone text-blue-500 mr-2"></i>
+                                <span>{{ hotel.phone }}</span>
+                            </div>
+                        </div>
+                        <!-- Favorite Button -->
+                        <button class="text-gray-400 hover:text-red-500 transition-colors">
+                            <i class="far fa-heart text-xl"></i>
+                        </button>
+                    </div>
+
+                    <!-- Room Categories -->
+                    {% if hotel.rooms.all %}
+                    <div class="mb-2">
+                        <h4 class="font-semibold text-gray-700 mb-3 flex items-center">
+                            <i class="fas fa-door-open text-blue-500 mr-2"></i>
+                            Available Rooms:
+                        </h4>
+                        <div class="space-y-4">
+                            {% for room in hotel.rooms.all %}
+                            <div class="room-card rounded-xl p-4">
+                                <!-- Room Image -->
+                                {% if room.image %}
+                                <div class="mb-3 rounded-lg overflow-hidden">
+                                    <img src="{{ room.image.url }}" alt="{{ room.get_category_display }}"
+                                        class="w-full h-40 object-cover">
+                                </div>
+                                {% else %}
+                                <div
+                                    class="mb-3 w-full h-40 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-bed text-4xl text-gray-400"></i>
+                                </div>
+                                {% endif %}
+
+                                <div class="flex justify-between items-start mb-3">
+                                    <div>
+                                        <p class="font-bold text-gray-900">{{ room.get_category_display }}</p>
+                                        <p class="text-gray-600 mt-1">
+                                            <span class="font-semibold text-blue-600 text-lg">₹{{ room.price_per_night }}</span>
+                                            <span class="text-sm text-gray-500">/night</span>
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="available-badge {% if room.available_rooms > 0 %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+                                        <span
+                                            class="pulse-available {% if room.available_rooms > 0 %}bg-green-500{% else %}bg-red-500{% endif %}"></span>
+                                        {{ room.available_rooms }} available
+                                    </div>
+                                </div>
+
+                                {% if room.available_rooms > 0 %}
+                                <!-- Booking Form -->
+                                <form method="POST" class="mt-3 space-y-3">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="room_id" value="{{ room.id }}">
+
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-700 mb-1">
+                                                <i class="fas fa-calendar-alt mr-1 text-blue-500"></i> Check-in
+                                            </label>
+                                            <input type="date" name="check_in" required
+                                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg form-control"
+                                                min="{{ today }}">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-700 mb-1">
+                                                <i class="fas fa-calendar-check mr-1 text-blue-500"></i> Check-out
+                                            </label>
+                                            <input type="date" name="check_out" required
+                                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg form-control"
+                                                min="{{ today }}">
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-700 mb-1">
+                                            <i class="fas fa-door-closed mr-1 text-blue-500"></i> Rooms
+                                        </label>
+                                        <div class="flex items-center">
+                                            <input type="number" name="rooms_booked" min="1"
+                                                max="{{ room.available_rooms }}" value="1" required
+                                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg form-control">
+                                            <span class="ml-2 text-sm text-gray-500">max {{ room.available_rooms }}</span>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit"
+                                        class="btn-primary w-full text-white px-4 py-3 rounded-lg font-semibold mt-2 flex items-center justify-center">
+                                        <i class="fas fa-calendar-plus mr-2"></i> Book Now
+                                    </button>
+                                </form>
+                                {% else %}
+                                <div class="text-center py-3 bg-red-50 rounded-lg">
+                                    <i class="fas fa-times-circle text-red-500 text-xl mb-2"></i>
+                                    <p class="text-red-600 font-medium">No rooms available</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-6 bg-gray-50 rounded-lg">
+                        <i class="fas fa-door-closed text-gray-400 text-3xl mb-3"></i>
+                        <p class="text-gray-500">No rooms added yet</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Review Section -->
+                    <div class="pt-4 border-t border-gray-100 mt-4">
+                        <button onclick="openReviewModal('{{ hotel.id }}', '{{ hotel.hotelowner }}')"
+                            class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center">
+                            <i class="far fa-comment-alt mr-2"></i> Write a Review
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full">
+                <div class="empty-state rounded-2xl p-12 text-center">
+                    <div
+                        class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full mb-6">
+                        <i class="fas fa-hotel text-3xl text-blue-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">No hotels available</h3>
+                    <p class="text-gray-600 max-w-md mx-auto mb-6">There are no approved hotels available at the
+                        moment. Please check back later.</p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-lg font-medium inline-flex items-center">
+                        <i class="fas fa-sync-alt mr-2"></i> Refresh Page
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination (Optional) -->
+        <div class="mt-12 flex justify-center">
+            <div class="flex space-x-2">
+                <button class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium">1</button>
+                <button
+                    class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">2</button>
+                <button
+                    class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">3</button>
+                <button class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div id="reviewModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"
+                onclick="closeReviewModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <form id="reviewForm" method="POST" action="">
+                    {% csrf_token %}
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                    Rate <span id="modalHotelName"></span>
+                                </h3>
+                                <div class="mt-4 space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Rating</label>
+                                        <div class="flex space-x-2 text-2xl text-gray-300">
+                                            <i class="fas fa-star cursor-pointer hover:text-yellow-400"
+                                                onclick="setRating(1)"></i>
+                                            <i class="fas fa-star cursor-pointer hover:text-yellow-400"
+                                                onclick="setRating(2)"></i>
+                                            <i class="fas fa-star cursor-pointer hover:text-yellow-400"
+                                                onclick="setRating(3)"></i>
+                                            <i class="fas fa-star cursor-pointer hover:text-yellow-400"
+                                                onclick="setRating(4)"></i>
+                                            <i class="fas fa-star cursor-pointer hover:text-yellow-400"
+                                                onclick="setRating(5)"></i>
+                                        </div>
+                                        <input type="hidden" name="rating" id="ratingInput" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Comment
+                                            (Optional)</label>
+                                        <textarea name="comment" rows="3"
+                                            class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button type="submit"
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                            Submit Review
+                        </button>
+                        <button type="button" onclick="closeReviewModal()"
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Set today's date as minimum for date inputs
+        document.addEventListener('DOMContentLoaded', function () {
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelectorAll('input[type="date"]').forEach(input => {
+                if (input.hasAttribute('min')) {
+                    input.setAttribute('min', today);
+                }
+            });
+
+            // Add animation to cards on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all hotel cards
+            document.querySelectorAll('.hotel-card').forEach(card => {
+                observer.observe(card);
+            });
+
+            // Simple search functionality
+            const searchInput = document.querySelector('input[placeholder*="Search hotels"]');
+            if (searchInput) {
+                searchInput.addEventListener('input', function (e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const hotelCards = document.querySelectorAll('.hotel-card');
+
+                    hotelCards.forEach(card => {
+                        const hotelName = card.querySelector('h3').textContent.toLowerCase();
+                        const hotelLocation = card.querySelector('.fa-map-marker-alt').parentElement.textContent.toLowerCase();
+
+                        if (hotelName.includes(searchTerm) || hotelLocation.includes(searchTerm)) {
+                            card.style.display = 'block';
+                            card.classList.add('animate__animated', 'animate__fadeIn');
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            // Favorite button toggle
+            document.querySelectorAll('.fa-heart').forEach(heart => {
+                heart.addEventListener('click', function () {
+                    if (this.classList.contains('far')) {
+                        this.classList.remove('far');
+                        this.classList.add('fas', 'text-red-500');
+                        // Add animation
+                        this.classList.add('animate__animated', 'animate__pulse');
+                        setTimeout(() => {
+                            this.classList.remove('animate__animated', 'animate__pulse');
+                        }, 300);
+                    } else {
+                        this.classList.remove('fas', 'text-red-500');
+                        this.classList.add('far', 'text-gray-400');
+                    }
+                });
+            });
+        });
+
+        // Review Modal Logic
+        window.openReviewModal = function (hotelId, hotelName) {
+            document.getElementById('modalHotelName').textContent = hotelName;
+            document.getElementById('reviewForm').action = `/hotels/review/${hotelId}/`;
+            document.getElementById('reviewModal').classList.remove('hidden');
+            resetStars();
+        }
+
+        window.closeReviewModal = function () {
+            document.getElementById('reviewModal').classList.add('hidden');
+        }
+
+        window.setRating = function (rating) {
+            document.getElementById('ratingInput').value = rating;
+            const stars = document.querySelectorAll('#reviewModal .fa-star');
+            resetStars();
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('text-yellow-400', 'fas');
+                    star.classList.remove('text-gray-300');
+                }
+            });
+        }
+
+        function resetStars() {
+            const stars = document.querySelectorAll('#reviewModal .fa-star');
+            stars.forEach(star => {
+                star.classList.remove('text-yellow-400');
+                star.classList.add('text-gray-300');
+            });
+        }
+
+
+    </script>
+</body>
+
+</html>

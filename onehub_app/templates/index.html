@@ -1,0 +1,1012 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ONEHUB — All Essential Services In One Place</title>
+  <meta name="description"
+    content="ONEHUB brings together food delivery, cab booking, hotel reservations, fuel delivery, and train tickets in a single, beautifully simple experience." />
+  <meta name="author" content="ONEHUB" />
+  <meta property="og:title" content="ONEHUB — All Essential Services In One Place" />
+  <meta property="og:description"
+    content="A single super-app experience without the app. Discover all your daily essentials in one static page." />
+  <meta property="og:image" content="/og-image.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Clash+Display:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "system-ui", "sans-serif"],
+            display: ['"Clash Display"', "Inter", "system-ui", "sans-serif"],
+          },
+          boxShadow: {
+            glass: "0 25px 60px rgba(15, 23, 42, 0.16)",
+            card: "0 20px 40px rgba(15, 23, 42, 0.08)",
+            hover: "0 30px 60px rgba(15, 23, 42, 0.12)",
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: #fff;
+      color: #0f172a;
+      overflow-x: hidden;
+    }
+
+    .font-display {
+      font-family: "Clash Display", "Inter", "Segoe UI", sans-serif;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      background-color: #f97316;
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(249, 115, 22, 0.25);
+      transition: all 0.25s ease;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      background-color: #ea580c;
+      box-shadow: 0 15px 30px rgba(249, 115, 22, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      background-color: rgba(255, 255, 255, 0.85);
+      color: #0f172a;
+      transition: all 0.25s ease;
+      box-shadow: 0 5px 18px rgba(15, 23, 42, 0.08);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(15, 23, 42, 0.35);
+      background-color: #fff;
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      background-color: #7c3aed;
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);
+      transition: all 0.25s ease;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      background-color: #6d28d9;
+      box-shadow: 0 15px 30px rgba(124, 58, 237, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .glass-card {
+      backdrop-filter: blur(20px);
+      background-color: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 1.5rem;
+      box-shadow: 0 30px 70px rgba(79, 70, 229, 0.12);
+    }
+
+    .animate-fade-in {
+      opacity: 0;
+      animation: fadeInUp 0.9s ease forwards;
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-pulse-soft {
+      animation: pulseSoft 4s ease-in-out infinite;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(-6px);
+      }
+
+      50% {
+        transform: translateY(6px);
+      }
+    }
+
+    @keyframes pulseSoft {
+
+      0%,
+      100% {
+        transform: scale(0.98);
+        box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15);
+      }
+
+      50% {
+        transform: scale(1);
+        box-shadow: 0 30px 60px rgba(99, 102, 241, 0.25);
+      }
+    }
+
+    .rating span {
+      font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .glass-card {
+        border-radius: 1rem;
+      }
+
+      .hero-section {
+        padding-top: 28rem !important;
+      }
+    }
+
+    /* Smooth scrolling for anchor links */
+    html {
+      scroll-padding-top: 80px;
+    }
+  </style>
+</head>
+
+<body class="antialiased">
+  <div class="min-h-screen flex flex-col">
+    <header id="site-header" class="fixed inset-x-0 top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-white/60">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="#hero" class="flex items-center space-x-2">
+          <span
+            class="text-2xl font-display font-semibold bg-gradient-to-r from-orange-500 via-violet-500 to-green-500 bg-clip-text text-transparent">ONEHUB</span>
+        </a>
+        <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-600">
+          <a href="#hero" class="hover:text-orange-500 transition-colors">Home</a>
+          <a href="#services" class="hover:text-orange-500 transition-colors">Services</a>
+          <a href="#about" class="hover:text-orange-500 transition-colors">About</a>
+          <a href="#testimonials" class="hover:text-orange-500 transition-colors">Stories</a>
+          <a href="#contact" class="hover:text-orange-500 transition-colors">Contact</a>
+          <button onclick="openAdminModal()"
+            class="btn-primary text-sm px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors duration-200">
+            Admin Login
+          </button>
+
+
+
+        </nav>
+        <div class="hidden md:flex items-center space-x-3">
+          <a href="/login/" class="text-sm font-medium text-gray-700 hover:text-orange-500 transition-colors">Sign
+            In</a>
+          <a href="/register/" class="btn-primary text-sm">Get Started</a>
+
+        </div>
+        <button type="button"
+          class="md:hidden inline-flex items-center justify-center rounded-full border border-gray-200 p-2 text-gray-700"
+          data-mobile-toggle aria-label="Toggle navigation" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="6" x2="20" y2="6" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="18" x2="20" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <div id="mobile-menu" class="md:hidden hidden border-t border-gray-100 bg-white/95 backdrop-blur px-6 pb-6 pt-2">
+        <nav class="flex flex-col space-y-4 text-base font-medium text-gray-700">
+          <a href="#hero" class="hover:text-orange-500 transition-colors py-2">Home</a>
+          <a href="#services" class="hover:text-orange-500 transition-colors py-2">Services</a>
+          <a href="#about" class="hover:text-orange-500 transition-colors py-2">About</a>
+          <a href="#testimonials" class="hover:text-orange-500 transition-colors py-2">Stories</a>
+          <a href="#contact" class="hover:text-orange-500 transition-colors py-2">Contact</a>
+        </nav>
+        <div class="mt-6 flex flex-col space-y-3">
+          <a href="#contact"
+            class="text-center py-3 border border-gray-200 rounded-full font-medium text-gray-800 hover:bg-gray-50">Sign
+            In</a>
+          <a href="register.html" class="text-center btn-primary">Get Started</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <!-- Hero -->
+      <section id="hero" class="relative pt-32 pb-20 overflow-hidden hero-section">
+        <div class="absolute inset-0 bg-gradient-to-br from-violet-50 via-orange-50 to-green-50"></div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+          <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8">
+              <span
+                class="inline-block bg-orange-100 text-orange-600 font-medium text-xs uppercase tracking-wide px-4 py-1.5 rounded-full animate-fade-in"
+                style="animation-delay: 0.1s">
+                All essential services in one place
+              </span>
+              <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight animate-fade-in"
+                style="animation-delay: 0.2s">
+                Your daily essentials in
+                <span
+                  class="bg-gradient-to-r from-orange-500 via-violet-500 to-green-500 bg-clip-text text-transparent">ONEHUB</span>
+              </h1>
+              <p class="text-lg text-gray-600 animate-fade-in" style="animation-delay: 0.3s">
+                Food delivery, cab booking, hotel reservations, fuel delivery, and train tickets—now just a single tap
+                away. ONEHUB keeps every essential service under one clean tab so life
+                simply flows.
+              </p>
+              <div class="glass-card p-6 animate-fade-in" style="animation-delay: 0.4s">
+                <form class="flex flex-col md:flex-row gap-3">
+                  <input type="text" placeholder="Try &quot;I need a cab to the airport at 6 AM&quot;"
+                    class="w-full rounded-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    aria-label="Describe your service need" />
+                  <button type="button" class="btn-primary w-full md:w-auto">Search with AI</button>
+                </form>
+                <p class="mt-3 text-sm text-gray-500">Describe what you need. ONEHUB suggests the right service
+                  instantly.</p>
+              </div>
+              <div class="flex flex-col sm:flex-row gap-4 animate-fade-in" style="animation-delay: 0.5s">
+                <a href="#cta" class="btn-primary flex items-center justify-center">
+                  Get Started
+                  <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </a>
+                <a href="#services" class="btn-outline flex items-center justify-center">
+                  Explore Services
+                  <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </a>
+              </div>
+              <div class="grid grid-cols-3 gap-6 text-center animate-fade-in" style="animation-delay: 0.6s">
+                <div>
+                  <p class="text-3xl font-display font-semibold text-gray-900">10K+</p>
+                  <p class="text-sm text-gray-500">Daily Users</p>
+                </div>
+                <div>
+                  <p class="text-3xl font-display font-semibold text-gray-900">5+</p>
+                  <p class="text-sm text-gray-500">Service Categories</p>
+                </div>
+                <div>
+                  <p class="text-3xl font-display font-semibold text-gray-900">99%</p>
+                  <p class="text-sm text-gray-500">Satisfaction</p>
+                </div>
+              </div>
+              <div class="animate-fade-in" style="animation-delay: 0.7s">
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Trusted by leading brands
+                </p>
+                <div class="flex flex-wrap items-center gap-4">
+                  <div class="h-8 bg-white px-3 rounded shadow-sm flex items-center">
+                    <img src="{% static 'images/swiggy.png' %}" alt="Swiggy Food Delivery" class="h-5" />
+                  </div>
+
+                  <div class="h-8 bg-white px-3 rounded shadow-sm flex items-center">
+                    <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png"
+                      alt="Zomato Restaurant Discovery" class="h-5" />
+                  </div>
+                  <div class="h-8 bg-black px-3 rounded shadow-sm flex items-center">
+                    <img src="{% static 'images/uber.avif' %}" alt="Uber Ride Sharing" class="h-5" />
+                  </div>
+                  <div class="h-8 bg-white px-3 rounded shadow-sm flex items-center">
+                    <img src="{% static 'images/olaa.png' %}" alt="Ola Cabs" class="h-5" />
+                  </div>
+                  <div class="h-8 bg-blue-500 px-3 rounded shadow-sm flex items-center">
+                    <img src="https://imgak.mmtcdn.com/pwa_v3/pwa_hotel_assets/header/mmtLogoWhite.png"
+                      alt="MakeMyTrip Travel Booking" class="h-5" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="relative">
+              <div
+                class="absolute -top-20 -left-10 w-64 h-64 bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-float">
+              </div>
+              <div
+                class="absolute -bottom-16 -right-8 w-72 h-72 bg-violet-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-float"
+                style="animation-delay: 1s"></div>
+              <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-green-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-float"
+                style="animation-delay: 2s"></div>
+              <div class="glass-card p-10 relative z-10 animate-pulse-soft">
+                <div class="flex items-center justify-between mb-6">
+                  <div>
+                    <p class="text-sm text-gray-500">Integration Status</p>
+                    <p class="text-2xl font-display font-semibold">ALL SYSTEMS GO</p>
+                  </div>
+                  <span
+                    class="inline-flex items-center space-x-1 rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-600">
+                    <span class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span>Live</span>
+                  </span>
+                </div>
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between rounded-2xl border border-gray-100 px-4 py-3">
+                    <div class="flex items-center space-x-3">
+                      <span class="rounded-full bg-orange-100 p-2 text-orange-500" aria-hidden="true">🍔</span>
+                      <div>
+                        <p class="font-medium text-gray-900">Swiggy + Zomato</p>
+                        <p class="text-xs text-gray-500">Food delivery unified</p>
+                      </div>
+                    </div>
+                    <span class="text-sm font-semibold text-green-600">Synced</span>
+                  </div>
+                  <div class="flex items-center justify-between rounded-2xl border border-gray-100 px-4 py-3">
+                    <div class="flex items-center space-x-3">
+                      <span class="rounded-full bg-violet-100 p-2 text-violet-600" aria-hidden="true">🚕</span>
+                      <div>
+                        <p class="font-medium text-gray-900">Uber + Ola</p>
+                        <p class="text-xs text-gray-500">Cab booking ready</p>
+                      </div>
+                    </div>
+                    <span class="text-sm font-semibold text-green-600">Live</span>
+                  </div>
+                  <div class="flex items-center justify-between rounded-2xl border border-gray-100 px-4 py-3">
+                    <div class="flex items-center space-x-3">
+                      <span class="rounded-full bg-blue-100 p-2 text-blue-600" aria-hidden="true">🏨</span>
+                      <div>
+                        <p class="font-medium text-gray-900">Hotels Network</p>
+                        <p class="text-xs text-gray-500">Best deals curated</p>
+                      </div>
+                    </div>
+                    <span class="text-sm font-semibold text-green-600">Active</span>
+                  </div>
+                </div>
+                <div class="mt-8 rounded-2xl border border-dashed border-gray-200 p-5 text-center">
+                  <p class="text-sm text-gray-500 mb-2">ONEHUB orchestration</p>
+                  <p class="text-3xl font-display font-semibold text-gray-900">ONE DASHBOARD</p>
+                  <p class="text-xs text-gray-500 mt-1">All services, one timeline</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services -->
+      <section id="services" class="py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="text-center max-w-3xl mx-auto mb-14">
+            <span
+              class="inline-block bg-violet-100 text-violet-600 font-medium text-xs uppercase tracking-wider px-4 py-1.5 rounded-full animate-fade-in">Our
+              services</span>
+            <h2 class="mt-5 text-3xl md:text-4xl font-display font-semibold text-gray-900 animate-fade-in"
+              style="animation-delay: 0.1s">Everything you need, beautifully connected</h2>
+            <p class="mt-4 text-gray-600 animate-fade-in" style="animation-delay: 0.2s">
+              ONEHUB takes the friction out of everyday chores. Browse our most-used services below—each one
+              thoughtfully curated and always ready.
+            </p>
+          </div>
+          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <article
+              class="bg-white rounded-3xl p-8 shadow-card hover:shadow-hover transition-all duration-300 border border-gray-100 hover:-translate-y-1">
+              <div class="w-14 h-14 rounded-2xl bg-orange-100 text-orange-500 flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor"
+                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 2h7l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V2z" />
+                  <polyline points="9 2 9 7 14 7" />
+                </svg>
+              </div>
+              <span
+                class="inline-flex items-center rounded-full bg-orange-500 text-white text-xs font-semibold px-3 py-1">Popular
+                Service</span>
+              <h3 class="mt-4 text-2xl font-semibold text-gray-900">Food Delivery</h3>
+              <p class="mt-3 text-gray-600">Order from your favourite restaurants and track every step in real time.</p>
+              <a href="#cta" class="mt-6 inline-flex items-center font-semibold text-gray-900 hover:text-orange-500">
+                Explore Service
+                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </a>
+            </article>
+            <article
+              class="bg-white rounded-3xl p-8 shadow-card hover:shadow-hover transition-all duration-300 border border-gray-100 hover:-translate-y-1">
+              <div class="w-14 h-14 rounded-2xl bg-violet-100 text-violet-600 flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor"
+                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1-4-1-5 1-5 1" />
+                  <path
+                    d="M3 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C5.7 10.6 3 10 3 10s-1.3-1-4-1v8c0 .6.4 1 1 1z" />
+                  <path d="M8 17v-6" />
+                  <path d="M15 17v-6" />
+                  <path d="M9 8h6" />
+                </svg>
+              </div>
+              <span
+                class="inline-flex items-center rounded-full bg-violet-600 text-white text-xs font-semibold px-3 py-1">Popular
+                Service</span>
+              <h3 class="mt-4 text-2xl font-semibold text-gray-900">Cab Booking</h3>
+              <p class="mt-3 text-gray-600">Request reliable rides in seconds and save your favourite routes for later.
+              </p>
+              <a href="#cta" class="mt-6 inline-flex items-center font-semibold text-gray-900 hover:text-orange-500">
+                Explore Service
+                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </a>
+            </article>
+            <article
+              class="bg-white rounded-3xl p-8 shadow-card hover:shadow-hover transition-all duration-300 border border-gray-100 hover:-translate-y-1">
+              <div class="w-14 h-14 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor"
+                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                  <path d="M2 8h16v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8z" />
+                  <line x1="6" y1="13" x2="6" y2="13" />
+                  <line x1="10" y1="13" x2="10" y2="13" />
+                  <path d="M15 8v-2a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v2" />
+                </svg>
+              </div>
+              <span
+                class="inline-flex items-center rounded-full bg-green-500 text-white text-xs font-semibold px-3 py-1">Popular
+                Service</span>
+              <h3 class="mt-4 text-2xl font-semibold text-gray-900">Hotel Reservations</h3>
+              <p class="mt-3 text-gray-600">Compare stays, snag best deals, and share itineraries with your crew.</p>
+              <a href="#cta" class="mt-6 inline-flex items-center font-semibold text-gray-900 hover:text-orange-500">
+                Explore Service
+                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </a>
+            </article>
+            <article
+              class="bg-white rounded-3xl p-8 shadow-card hover:shadow-hover transition-all duration-300 border border-gray-100 hover:-translate-y-1">
+              <div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor"
+                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2v20" />
+                  <path d="M2 12h20" />
+                  <path d="M3.515 3.515l16.97 16.97" />
+                  <path d="M3.515 20.485l16.97-16.97" />
+                </svg>
+              </div>
+              <span
+                class="inline-flex items-center rounded-full bg-blue-500 text-white text-xs font-semibold px-3 py-1">Popular
+                Service</span>
+              <h3 class="mt-4 text-2xl font-semibold text-gray-900">Fuel Delivery</h3>
+              <p class="mt-3 text-gray-600">Top up fleets or personal vehicles without ever detouring to a pump.</p>
+              <a href="#cta" class="mt-6 inline-flex items-center font-semibold text-gray-900 hover:text-orange-500">
+                Explore Service
+                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </a>
+            </article>
+            <article
+              class="bg-white rounded-3xl p-8 shadow-card hover:shadow-hover transition-all duration-300 border border-gray-100 hover:-translate-y-1">
+              <div class="w-14 h-14 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor"
+                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 10h20" />
+                  <path d="M12 2v16" />
+                  <path d="M2 10l4 4-4 4" />
+                  <path d="M22 10l-4 4 4 4" />
+                </svg>
+              </div>
+              <span
+                class="inline-flex items-center rounded-full bg-pink-500 text-white text-xs font-semibold px-3 py-1">Popular
+                Service</span>
+              <h3 class="mt-4 text-2xl font-semibold text-gray-900">Train Tickets</h3>
+              <p class="mt-3 text-gray-600">Track live availability, confirm seats, and get reminders before departure.
+              </p>
+              <a href="#cta" class="mt-6 inline-flex items-center font-semibold text-gray-900 hover:text-orange-500">
+                Explore Service
+                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </a>
+            </article>
+            <article
+              class="bg-white rounded-3xl p-8 shadow-card hover:shadow-hover transition-all duration-300 border border-dashed border-gray-200 hover:-translate-y-1">
+              <div class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-600 flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor"
+                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2v4" />
+                  <path d="m16.24 7.76 2.83-2.83" />
+                  <path d="M18 12h4" />
+                  <path d="m16.24 16.24 2.83 2.83" />
+                  <path d="M12 18v4" />
+                  <path d="m7.76 16.24-2.83 2.83" />
+                  <path d="M6 12H2" />
+                  <path d="m7.76 7.76-2.83-2.83" />
+                </svg>
+              </div>
+              <span
+                class="inline-flex items-center rounded-full bg-slate-800 text-white text-xs font-semibold px-3 py-1">More
+                soon</span>
+              <h3 class="mt-4 text-2xl font-semibold text-gray-900">Coming Next</h3>
+              <p class="mt-3 text-gray-600">Bill payments, shopping, experiences, and surprises requested by the
+                community.</p>
+              <a href="#cta" class="mt-6 inline-flex items-center font-semibold text-gray-900 hover:text-orange-500">
+                Get Early Access
+                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why choose us -->
+      <section id="about" class="py-24">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+          <div class="space-y-6">
+            <span
+              class="inline-block bg-orange-100 text-orange-600 font-medium text-xs uppercase tracking-wide px-4 py-1.5 rounded-full animate-fade-in">Why
+              choose ONEHUB</span>
+            <h2 class="text-3xl md:text-4xl font-display font-semibold animate-fade-in" style="animation-delay: 0.1s">
+              Your convenience is our top priority</h2>
+            <p class="text-gray-600 animate-fade-in" style="animation-delay: 0.2s">
+              ONEHUB exists to simplify life. Instead of juggling half a dozen apps, you get a single super-surface that
+              remembers your habits, syncs your bookings, and keeps plans in motion.
+            </p>
+            <div class="space-y-6">
+              <div class="flex items-start space-x-4 animate-fade-in" style="animation-delay: 0.3s">
+                <span class="rounded-full bg-green-100 p-3 text-green-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                </span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900">All services in one tab</h3>
+                  <p class="text-gray-600">Switch from food to travel to fuel without losing context or time.</p>
+                </div>
+              </div>
+              <div class="flex items-start space-x-4 animate-fade-in" style="animation-delay: 0.4s">
+                <span class="rounded-full bg-green-100 p-3 text-green-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                </span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900">Bank-level security</h3>
+                  <p class="text-gray-600">Encrypted transactions, secure identity, and transparent privacy controls.
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start space-x-4 animate-fade-in" style="animation-delay: 0.5s">
+                <span class="rounded-full bg-green-100 p-3 text-green-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                </span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900">Time saved daily</h3>
+                  <p class="text-gray-600">Automations clear repetitive steps so you can get confirmations instantly.
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start space-x-4 animate-fade-in" style="animation-delay: 0.6s">
+                <span class="rounded-full bg-green-100 p-3 text-green-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="13 3 13 10 19 10" />
+                    <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8" />
+                    <path d="M4 16s-1-1-1-3 1-3 3-3 3 2 3 3" />
+                    <circle cx="8" cy="16" r="2" />
+                  </svg>
+                </span>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900">Personal recommendations</h3>
+                  <p class="text-gray-600">Suggestions adapt to your taste, budget, and previous trips.</p>
+                </div>
+              </div>
+            </div>
+            <a href="#contact" class="btn-outline inline-flex items-center w-fit animate-fade-in"
+              style="animation-delay: 0.7s">
+              Learn more about us
+              <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </a>
+          </div>
+          <div class="relative">
+            <div
+              class="absolute -top-12 -left-12 w-72 h-72 bg-violet-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-float">
+            </div>
+            <div
+              class="absolute -bottom-12 -right-8 w-72 h-72 bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-float"
+              style="animation-delay: 1s"></div>
+            <div class="glass-card relative z-10 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?auto=format&fit=crop&w=987&q=80"
+                alt="ONEHUB mobile preview showing app interface" class="w-full object-cover rounded-[22px]"
+                loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section id="testimonials" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="text-center max-w-3xl mx-auto mb-14">
+            <span
+              class="inline-block bg-green-100 text-green-600 font-medium text-xs uppercase tracking-wider px-4 py-1.5 rounded-full">Testimonials</span>
+            <h2 class="mt-5 text-3xl md:text-4xl font-display font-semibold text-gray-900">What our users say</h2>
+            <p class="mt-4 text-gray-600">People use ONEHUB to keep their routines smooth. Here are a few of their
+              stories.</p>
+          </div>
+          <div class="grid gap-8 md:grid-cols-2">
+            <article class="p-8 rounded-3xl border border-gray-100 shadow-card">
+              <div class="rating flex space-x-1 text-yellow-400 mb-4" aria-label="5 out of 5 stars">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              </div>
+              <p class="text-gray-700 italic">
+                "ONEHUB completely changed how I plan weekends. Food, rides, even hotel day-cations are synced. No more
+                app hopping."
+              </p>
+              <div class="mt-6 flex items-center">
+                <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah Johnson"
+                  class="h-12 w-12 rounded-full object-cover mr-4" />
+                <div>
+                  <p class="font-semibold text-gray-900">Sarah Johnson</p>
+                  <p class="text-sm text-gray-500">Regular User</p>
+                </div>
+              </div>
+            </article>
+            <article class="p-8 rounded-3xl border border-gray-100 shadow-card">
+              <div class="rating flex space-x-1 text-yellow-400 mb-4" aria-label="4 out of 5 stars">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span class="text-gray-300">★</span>
+              </div>
+              <p class="text-gray-700 italic">
+                "As a business traveller I love that ONEHUB remembers my preferences. Booking trains and hotels now
+                takes under two minutes."
+              </p>
+              <div class="mt-6 flex items-center">
+                <img src="https://randomuser.me/api/portraits/men/54.jpg" alt="Michael Chen"
+                  class="h-12 w-12 rounded-full object-cover mr-4" />
+                <div>
+                  <p class="font-semibold text-gray-900">Michael Chen</p>
+                  <p class="text-sm text-gray-500">Business Traveller</p>
+                </div>
+              </div>
+            </article>
+            <article class="p-8 rounded-3xl border border-gray-100 shadow-card">
+              <div class="rating flex space-x-1 text-yellow-400 mb-4" aria-label="5 out of 5 stars">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              </div>
+              <p class="text-gray-700 italic">
+                "The recommendations keep surprising me. I've found new restaurants and getaway spots without endless
+                scrolling."
+              </p>
+              <div class="mt-6 flex items-center">
+                <img src="https://randomuser.me/api/portraits/women/63.jpg" alt="Emily Rodriguez"
+                  class="h-12 w-12 rounded-full object-cover mr-4" />
+                <div>
+                  <p class="font-semibold text-gray-900">Emily Rodriguez</p>
+                  <p class="text-sm text-gray-500">Foodie & Explorer</p>
+                </div>
+              </div>
+            </article>
+            <article class="p-8 rounded-3xl border border-gray-100 shadow-card">
+              <div class="rating flex space-x-1 text-yellow-400 mb-4" aria-label="5 out of 5 stars">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              </div>
+              <p class="text-gray-700 italic">
+                "Family trips used to be chaos. ONEHUB now handles cabs, tickets, and stays so I can focus on making
+                memories."
+              </p>
+              <div class="mt-6 flex items-center">
+                <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="David Thompson"
+                  class="h-12 w-12 rounded-full object-cover mr-4" />
+                <div>
+                  <p class="font-semibold text-gray-900">David Thompson</p>
+                  <p class="text-sm text-gray-500">Family Planner</p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section id="cta" class="py-24">
+        <div class="max-w-6xl mx-auto px-6">
+          <div
+            class="rounded-[32px] bg-gradient-to-r from-violet-600 to-violet-800 text-white px-8 py-16 text-center shadow-hover">
+            <h2 class="text-3xl md:text-4xl font-display font-semibold mb-6">Ready to simplify your life?</h2>
+            <p class="text-violet-100 text-lg max-w-2xl mx-auto mb-10">
+              Join thousands of users who already trust ONEHUB to orchestrate their everyday essentials. No downloads,
+              no sign-up hoops—just clarity and control.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+              <a href="#contact"
+                class="bg-white text-violet-700 font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors">Get
+                Started</a>
+              <a href="#contact"
+                class="border border-white text-white font-semibold px-8 py-3 rounded-full hover:bg-white/10 transition-colors">Talk
+                to our team</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contact" class="bg-gray-50 border-t border-gray-200">
+      <div class="max-w-7xl mx-auto px-6 pt-16 pb-12">
+        <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4 mb-16">
+          <div>
+            <a href="#hero" class="inline-block">
+              <span
+                class="text-2xl font-display font-semibold bg-gradient-to-r from-orange-500 via-violet-500 to-green-500 bg-clip-text text-transparent">ONEHUB</span>
+            </a>
+            <p class="mt-4 text-gray-600">
+              Your all-in-one platform for food delivery, travel, fuel, and more. Built to keep daily life effortless.
+            </p>
+            <div class="flex space-x-4 mt-6 text-gray-400">
+              <a href="#" class="hover:text-orange-500" aria-label="Facebook">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor"
+                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                </svg>
+              </a>
+              <a href="#" class="hover:text-orange-500" aria-label="Twitter">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor"
+                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+                </svg>
+              </a>
+              <a href="#" class="hover:text-orange-500" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor"
+                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                </svg>
+              </a>
+              <a href="#" class="hover:text-orange-500" aria-label="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor"
+                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Services</h3>
+            <ul class="space-y-3 text-gray-600">
+              <li><a href="#services" class="hover:text-orange-500">Food Delivery</a></li>
+              <li><a href="#services" class="hover:text-orange-500">Cab Booking</a></li>
+              <li><a href="#services" class="hover:text-orange-500">Hotel Reservation</a></li>
+              <li><a href="#services" class="hover:text-orange-500">Fuel Delivery</a></li>
+              <li><a href="#services" class="hover:text-orange-500">Train Booking</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Company</h3>
+            <ul class="space-y-3 text-gray-600">
+              <li><a href="#about" class="hover:text-orange-500">About</a></li>
+              <li><a href="#" class="hover:text-orange-500">Careers</a></li>
+              <li><a href="#" class="hover:text-orange-500">Blog</a></li>
+              <li><a href="#" class="hover:text-orange-500">Press</a></li>
+              <li><a href="#contact" class="hover:text-orange-500">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Contact us</h3>
+            <ul class="space-y-4 text-gray-600">
+              <li class="flex items-start space-x-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-500 mt-0.5" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                <span>123 Innovation Street, Tech City, CA 94043</span>
+              </li>
+              <li class="flex items-center space-x-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-500" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+                <span>+1 (555) 123-4567</span>
+              </li>
+              <li class="flex items-center space-x-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-500" fill="none"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                <span>hello@onehub.com</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row md:items-center md:justify-between">
+          <p class="text-sm text-gray-500">© <span id="year"></span> ONEHUB. All rights reserved.</p>
+          <div class="flex space-x-6 text-sm text-gray-500 mt-4 md:mt-0">
+            <a href="#" class="hover:text-orange-500">Terms</a>
+            <a href="#" class="hover:text-orange-500">Privacy</a>
+            <a href="#" class="hover:text-orange-500">Cookies</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const mobileToggle = document.querySelector("[data-mobile-toggle]");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const header = document.getElementById("site-header");
+    const yearSpan = document.getElementById("year");
+
+    function syncYear() {
+      if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+    }
+
+    function toggleMobileMenu() {
+      const isExpanded = mobileToggle.getAttribute("aria-expanded") === "true";
+      mobileToggle.setAttribute("aria-expanded", !isExpanded);
+      mobileMenu?.classList.toggle("hidden");
+    }
+
+    function handleScroll() {
+      if (window.scrollY > 10) {
+        header?.classList.add("shadow-lg", "bg-white/95");
+      } else {
+        header?.classList.remove("shadow-lg", "bg-white/95");
+      }
+    }
+
+    // Close mobile menu when clicking a link
+    function closeMobileMenu() {
+      mobileMenu?.classList.add("hidden");
+      mobileToggle.setAttribute("aria-expanded", "false");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      syncYear();
+
+      mobileToggle?.addEventListener("click", toggleMobileMenu);
+      window.addEventListener("scroll", handleScroll);
+
+      // Close mobile menu when clicking on links
+      document.querySelectorAll('#mobile-menu a').forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+      });
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 80,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+    });
+    function openAdminModal() {
+      const modal = document.getElementById("adminModal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function closeAdminModal() {
+      const modal = document.getElementById("adminModal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+  </script>
+  <!-- Admin Login Modal -->
+  <div id="adminModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeAdminModal()"></div>
+
+    <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 animate-fade-in">
+      <h2 class="text-2xl font-display font-semibold text-center mb-2">
+        Admin Access
+      </h2>
+      <p class="text-center text-gray-500 mb-8">
+        Choose your admin portal
+      </p>
+
+      <div class="space-y-4">
+        <!-- ONEHUB ADMIN -->
+        <a href="{% url 'onehub_admin_login' %}"
+          class="flex items-center justify-between p-4 rounded-2xl border border-gray-200 hover:border-blue-500 hover:shadow-lg transition-all group">
+          <div>
+            <p class="font-semibold text-gray-900 group-hover:text-blue-600">ONEHUB Super Admin</p>
+            <p class="text-sm text-gray-500">System-wide administration</p>
+          </div>
+          <span class="text-blue-500 text-xl">⚙️</span>
+        </a>
+
+        <!-- HOTEL ADMIN -->
+        <a href="{% url 'hotel_admin_login' %}"
+          class="flex items-center justify-between p-4 rounded-2xl border border-gray-200 hover:border-green-500 hover:shadow-lg transition-all group">
+          <div>
+            <p class="font-semibold text-gray-900 group-hover:text-green-600">Hotel Admin</p>
+            <p class="text-sm text-gray-500">Manage hotels & rooms</p>
+          </div>
+          <span class="text-green-500 text-xl">🏨</span>
+        </a>
+
+        <!-- ECOMMERCE ADMIN -->
+        <a href="{% url 'ecommerce_login' %}"
+          class="flex items-center justify-between p-4 rounded-2xl border border-gray-200 hover:border-orange-500 hover:shadow-lg transition-all group">
+          <div>
+            <p class="font-semibold text-gray-900 group-hover:text-orange-600">Ecommerce Admin</p>
+            <p class="text-sm text-gray-500">Manage grocery products</p>
+          </div>
+          <span class="text-orange-500 text-xl">🛒</span>
+        </a>
+      
+      <button onclick="closeAdminModal()" class="mt-8 w-full text-sm font-medium text-gray-500 hover:text-gray-800">
+        Cancel
+      </button>
+    </div>
+  </div>
+
+</body>
+
+</html>

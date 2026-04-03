@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tourist Places - OneHub Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 260px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem 0;
+            z-index: 1000;
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-brand h3 {
+            color: white;
+            font-weight: 700;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 0.9rem 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-left-color: white;
+            color: white;
+        }
+
+        .sidebar-nav i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0;
+        }
+
+        .place-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .place-card h4 {
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-active {
+            background: #48bb78;
+            color: white;
+        }
+
+        .badge-inactive {
+            background: #cbd5e0;
+            color: #4a5568;
+        }
+
+        .image-gallery {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .image-gallery-item {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .image-gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .modal-content {
+            border-radius: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h3>OneHub<span style="color: rgba(255,255,255,0.7);">.</span></h3>
+            <small style="color: rgba(255,255,255,0.8);">Admin Panel</small>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="{% url 'onehub_admin_dashboard' %}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="{% url 'users_list' %}"><i class="fas fa-users"></i> Users</a></li>
+            <li><a href="{% url 'hotel_owners_list' %}"><i class="fas fa-hotel"></i> Hotel Owners</a></li>
+            <li><a href="{% url 'ecommerce_owners_list' %}"><i class="fas fa-shopping-cart"></i> Ecommerce Owners</a>
+            </li>
+            <li><a href="{% url 'tourist_places_list' %}" class="active"><i class="fas fa-map-marker-alt"></i> Tourist
+                    Places</a></li>
+            <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1><i class="fas fa-map-marker-alt me-2"></i>Tourist Places Management</h1>
+        </div>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <div class="mb-3">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addPlaceModal">
+                <i class="fas fa-plus me-2"></i>Add New Tourist Place
+            </button>
+        </div>
+
+        {% if places %}
+        {% for place in places %}
+        <div class="place-card">
+            <div class="d-flex justify-content-between align-items-start">
+                <div class="flex-grow-1">
+                    <h4>{{ place.name }}</h4>
+                    {% if place.description %}
+                    <p class="text-muted mb-2">{{ place.description|truncatewords:30 }}</p>
+                    {% endif %}
+                    <div class="mb-2">
+                        {% if place.opening_time %}
+                        <span class="badge bg-info me-2"><i class="fas fa-clock me-1"></i>{{ place.opening_time }}</span>
+                        {% endif %}
+                        {% if place.location_link %}
+                        <a href="{{ place.location_link }}" target="_blank"
+                            class="badge bg-primary text-decoration-none">
+                            <i class="fas fa-map-marker-alt me-1"></i>View Location
+                        </a>
+                        {% endif %}
+                        <span
+                            class="badge {% if place.is_active %}badge-active{% else %}badge-inactive{% endif %} ms-2">
+                            {% if place.is_active %}Active{% else %}Inactive{% endif %}
+                        </span>
+                    </div>
+
+                    {% if place.images.all %}
+                    <div class="image-gallery">
+                        {% for image in place.images.all %}
+                        <div class="image-gallery-item">
+                            <img src="{{ image.image.url }}" alt="{{ place.name }}">
+                            <form method="post" action="{% url 'delete_tourist_image' image.id %}"
+                                style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="image-delete-btn"
+                                    onclick="return confirm('Delete this image?')">×</button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#editPlaceModal{{ place.id }}">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <a href="{% url 'delete_tourist_place' place.id %}" class="btn btn-sm btn-outline-danger"
+                        onclick="return confirm('Delete this place?')">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editPlaceModal{{ place.id }}" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Tourist Place</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form method="post" action="{% url 'edit_tourist_place' place.id %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Name *</label>
+                                <input type="text" name="name" class="form-control" value="{{ place.name }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description (Optional)</label>
+                                <textarea name="description" class="form-control"
+                                    rows="4">{{ place.description }}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Opening Time (Optional)</label>
+                                <input type="text" name="opening_time" class="form-control"
+                                    value="{{ place.opening_time|default:'' }}" placeholder="e.g., 9:00 AM - 6:00 PM">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Location Link (Optional)</label>
+                                <input type="url" name="location_link" class="form-control"
+                                    value="{{ place.location_link|default:'' }}" placeholder="Google Maps URL">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Add More Images (Optional)</label>
+                                <input type="file" name="images" class="form-control" accept="image/*" multiple>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="is_active" class="form-check-input"
+                                    id="editActive{{ place.id }}" {% if place.is_active %}checked{% endif %}>
+                                <label class="form-check-label" for="editActive{{ place.id }}">Active</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Update Place</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>No tourist places found. Click "Add New Tourist Place" to get
+            started!
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="modal fade" id="addPlaceModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Tourist Place</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="post" action="{% url 'add_tourist_place' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Name *</label>
+                            <input type="text" name="name" class="form-control" required
+                                placeholder="Enter tourist place name">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description (Optional)</label>
+                            <textarea name="description" class="form-control" rows="4"
+                                placeholder="Optional description"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Opening Time (Optional)</label>
+                            <input type="text" name="opening_time" class="form-control"
+                                placeholder="e.g., 9:00 AM - 6:00 PM or 24 hours">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Location Link (Optional)</label>
+                            <input type="url" name="location_link" class="form-control"
+                                placeholder="Google Maps URL or location link">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Images (Optional)</label>
+                            <input type="file" name="images" class="form-control" accept="image/*" multiple>
+                            <small class="text-muted">You can select multiple images</small>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="is_active" class="form-check-input" id="addActive" checked>
+                            <label class="form-check-label" for="addActive">Active</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Add Place</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

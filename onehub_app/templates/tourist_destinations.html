@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Destinations - OneHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem 3rem;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .places-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .place-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s;
+        }
+
+        .place-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-images {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .image-carousel {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 100%;
+        }
+
+        .carousel-image {
+            min-width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .carousel-nav:hover {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .carousel-nav.prev {
+            left: 10px;
+        }
+
+        .carousel-nav.next {
+            right: 10px;
+        }
+
+        .image-count {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        .place-name {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+
+        .place-description {
+            color: #718096;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .place-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f7fafc;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .info-badge i {
+            color: #667eea;
+        }
+
+        .location-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .location-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .no-places {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .no-places i {
+            font-size: 4rem;
+            color: #cbd5e0;
+            margin-bottom: 1.5rem;
+        }
+
+        .no-places h3 {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 0.75rem;
+        }
+
+        .no-places p {
+            color: #718096;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .places-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">OneHub.</div>
+            <a href="{% url 'userdashboard' %}" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h1>✨ Discover Amazing Destinations</h1>
+        <p>Explore handpicked tourist places with stunning locations, timings, and more!</p>
+    </div>
+
+    <div class="container">
+        {% if places %}
+        <div class="places-grid">
+            {% for place in places %}
+            <div class="place-card">
+                {% if place.images.all %}
+                <div class="card-images">
+                    <div class="image-carousel" id="carousel-{{ place.id }}">
+                        {% for image in place.images.all %}
+                        <img src="{{ image.image.url }}" alt="{{ place.name }}" class="carousel-image">
+                        {% endfor %}
+                    </div>
+
+                    {% if place.images.all.count > 1 %}
+                    <button class="carousel-nav prev" onclick="moveCarousel({{ place.id }}, -1)">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-nav next" onclick="moveCarousel({{ place.id }}, 1)">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="image-count">
+                        <i class="fas fa-images"></i> {{ place.images.all.count }} Photos
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <div class="card-content">
+                    <h2 class="place-name">{{ place.name }}</h2>
+
+                    {% if place.description %}
+                    <p class="place-description">{{ place.description|truncatewords:40 }}</p>
+                    {% endif %}
+
+                    <div class="place-info">
+                        {% if place.opening_time %}
+                        <span class="info-badge">
+                            <i class="fas fa-clock"></i>
+                            {{ place.opening_time }}
+                        </span>
+                        {% endif %}
+
+                        <span class="info-badge">
+                            <i class="fas fa-check-circle"></i>
+                            Active
+                        </span>
+                    </div>
+
+                    {% if place.location_link %}
+                    <a href="{{ place.location_link }}" target="_blank" class="location-btn">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Open in Maps
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-places">
+            <i class="fas fa-map-marked-alt"></i>
+            <h3>No Destinations Yet</h3>
+            <p>Check back soon for exciting tourist places to explore!</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Image carousel functionality
+        const carouselStates = {};
+
+        function moveCarousel(placeId, direction) {
+            const carousel = document.getElementById('carousel-' + placeId);
+            const images = carousel.querySelectorAll('.carousel-image');
+            const imageCount = images.length;
+
+            if (!carouselStates[placeId]) {
+                carouselStates[placeId] = 0;
+            }
+
+            carouselStates[placeId] = (carouselStates[placeId] + direction + imageCount) % imageCount;
+            carousel.style.transform = `translateX(-${carouselStates[placeId] * 100}%)`;
+        }
+    </script>
+</body>
+
+</html>

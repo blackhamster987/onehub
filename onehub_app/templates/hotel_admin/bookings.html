@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Management - Hotel Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50">
+    <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="mb-8 flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Booking Management</h1>
+                    <p class="mt-2 text-gray-600">Hotel: {{ hotel.hotelowner }}</p>
+                </div>
+                <a href="{% url 'hotel_admin_dashboard' %}" class="text-blue-600 hover:text-blue-800">← Back to
+                    Dashboard</a>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+            <div class="mb-6 space-y-2">
+                {% for message in messages %}
+                <div
+                    class="rounded-md p-4 {% if message.tags == 'error' %}bg-red-50 text-red-800{% elif message.tags == 'success' %}bg-green-50 text-green-800{% elif message.tags == 'warning' %}bg-yellow-50 text-yellow-800{% else %}bg-blue-50 text-blue-800{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Bookings Table -->
+            {% if bookings %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Guest</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Room Type</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Dates</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Rooms</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Requested</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% for booking in bookings %}
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">{% if booking.user.name %}{{ booking.user.name }}{% else %}{{ booking.user.email }}{% endif %}</div>
+                                    <div class="text-sm text-gray-500">{{ booking.user.email }}</div>
+                                    {% if booking.user.phone %}
+                                    <div class="text-sm text-gray-500">📞 {{ booking.user.phone }}</div>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ booking.room.get_category_display }}</div>
+                                    <div class="text-sm text-gray-500">₹{{ booking.room.price_per_night }}/night</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900">{{ booking.check_in }} to {{ booking.check_out }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ booking.rooms_booked }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {% if booking.status == 'pending' %}
+                                    <span
+                                        class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">🟡
+                                        Pending</span>
+                                    {% elif booking.status == 'approved' %}
+                                    <span
+                                        class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">🟢
+                                        Approved</span>
+                                    {% elif booking.status == 'rejected' %}
+                                    <span
+                                        class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">🔴
+                                        Rejected</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ booking.created_at|date:"M d, Y H:i" }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    {% if booking.status == 'pending' %}
+                                    <div class="flex space-x-2">
+                                        <button
+                                            onclick="confirmAction('{% url 'approve_booking' booking.id %}', 'approve')"
+                                            class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">✓
+                                            Approve</button>
+                                        <button
+                                            onclick="confirmAction('{% url 'reject_booking' booking.id %}', 'reject')"
+                                            class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">✗
+                                            Reject</button>
+                                    </div>
+                                    {% else %}
+                                    <span class="text-gray-400">No action</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% else %}
+            <div class="bg-white rounded-lg shadow-md p-12 text-center">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                <h3 class="mt-4 text-lg font-medium text-gray-900">No bookings yet</h3>
+                <p class="mt-2 text-gray-600">Bookings will appear here once guests make reservations</p>
+            </div>
+            {% endif %}
+
+            <!-- Statistics -->
+            <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-3">
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="p-5">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <div class="rounded-md bg-yellow-500 p-3">
+                                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt class="text-sm font-medium text-gray-500 truncate">Pending Requests</dt>
+                                    <dd class="text-2xl font-semibold text-gray-900">{{ pending_count }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="p-5">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <div class="rounded-md bg-green-500 p-3">
+                                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt class="text-sm font-medium text-gray-500 truncate">Approved</dt>
+                                    <dd class="text-2xl font-semibold text-gray-900">{{ approved_count }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="p-5">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <div class="rounded-md bg-red-500 p-3">
+                                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt class="text-sm font-medium text-gray-500 truncate">Rejected</dt>
+                                    <dd class="text-2xl font-semibold text-gray-900">{{ rejected_count }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function confirmAction(url, action) {
+            const message = action === 'approve' ? 'Are you sure you want to approve this booking? This will reduce your available rooms.' : 'Are you sure you want to reject this booking?';
+            if (confirm(message)) {
+                window.location.href = url;
+            }
+        }
+    </script>
+</body>
+
+</html>

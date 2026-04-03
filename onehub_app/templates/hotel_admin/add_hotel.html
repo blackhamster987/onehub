@@ -1,0 +1,9 @@
+<h2>Register Hotel</h2>
+<form method="post">
+  {% csrf_token %}
+  <input name="name" placeholder="Hotel Name"><br>
+  <input name="location" placeholder="Location"><br>
+  <textarea name="description" placeholder="Description"></textarea><br>
+  <input name="contact" placeholder="Contact"><br>
+  <button type="submit">Save</button>
+</form>

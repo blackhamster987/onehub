@@ -1,0 +1,265 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Gmail</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.8s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        p {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 10px;
+            border: 2px solid #e8f0fe;
+            background: #f8f9fa;
+            font-size: 15px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #6a11cb;
+            background: #fff;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 42px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.3);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        .footer a {
+            color: #6a11cb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        .gmail-icon {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #DB4437;
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="gmail-icon">
+            <i class="fab fa-google"></i>
+        </div>
+        <h1>Welcome Back to OneHub</h1>
+        <p>Enter your Gmail credentials to continue</p>
+
+        <form method="post" id="loginForm">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="email">Gmail Address</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="yourname@gmail.com" 
+                    required
+                    pattern="[a-z0-9._%+-]+@gmail\.com$"
+                    title="Please enter a valid Gmail address (ends with @gmail.com)">
+                <div class="error-message" id="emailError">Please enter a valid Gmail address</div>
+            </div>
+
+            <div class="form-group">
+    <label for="password">Password</label>
+    <input 
+        type="password" 
+        id="password" 
+        name="password" 
+        placeholder="Enter your password" 
+        required
+        minlength="8">
+
+    <span class="password-toggle" id="togglePassword">
+        <i class="far fa-eye" id="eyeIcon"></i>
+    </span>
+
+    <div class="error-message" id="passwordError">
+        Password must be at least 8 characters
+    </div>
+</div>
+
+            <button type="submit" class="submit-btn">Sign In</button>
+        </form>
+
+        <div class="footer">
+            <p>Don't have an account? <a href=/register/>Create account</a></p>
+            
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = togglePassword.querySelector('i');
+
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            eyeIcon.classList.toggle('fa-eye');
+            eyeIcon.classList.toggle('fa-eye-slash');
+        });
+
+        // Form validation
+        const form = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+
+        function validateEmail(email) {
+            const emailPattern = /^[a-z0-9._%+-]+@gmail\.com$/;
+            return emailPattern.test(email.toLowerCase());
+        }
+
+        function validatePassword(password) {
+            return password.length >= 8;
+        }
+
+        // Real-time validation
+        emailInput.addEventListener('input', function() {
+            if (validateEmail(this.value)) {
+                emailError.style.display = 'none';
+                this.style.borderColor = '#2ecc71';
+            } else {
+                emailError.style.display = 'block';
+                this.style.borderColor = '#e74c3c';
+            }
+        });
+
+        passwordInput.addEventListener('input', function() {
+            if (validatePassword(this.value)) {
+                passwordError.style.display = 'none';
+                this.style.borderColor = '#2ecc71';
+            } else {
+                passwordError.style.display = 'block';
+                this.style.borderColor = '#e74c3c';
+            }
+        });
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            if (!validateEmail(emailInput.value)) {
+                emailError.style.display = 'block';
+                emailInput.style.borderColor = '#e74c3c';
+                isValid = false;
+            }
+            
+            if (!validatePassword(passwordInput.value)) {
+                passwordError.style.display = 'block';
+                passwordInput.style.borderColor = '#e74c3c';
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // If all validations pass, form will submit normally
+            return true;
+        });
+    </script>
+    <script>
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordInput = document.getElementById("password");
+    const eyeIcon = document.getElementById("eyeIcon");
+
+    togglePassword.addEventListener("click", function () {
+        const isPassword = passwordInput.type === "password";
+
+        passwordInput.type = isPassword ? "text" : "password";
+
+        // Toggle eye icon
+        eyeIcon.classList.toggle("fa-eye");
+        eyeIcon.classList.toggle("fa-eye-slash");
+    });
+</script>
+
+</body>
+</html>

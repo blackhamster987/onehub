@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneHub Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 260px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-brand h3 {
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-brand small {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 0.9rem 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            font-weight: 500;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-left-color: white;
+            color: white;
+        }
+
+        .sidebar-nav i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card.primary {
+            border-left-color: #667eea;
+        }
+
+        .stat-card.success {
+            border-left-color: #48bb78;
+        }
+
+        .stat-card.warning {
+            border-left-color: #f6ad55;
+        }
+
+        .stat-card.info {
+            border-left-color: #4299e1;
+        }
+
+        .stat-card-title {
+            color: #718096;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .stat-card-icon {
+            float: right;
+            font-size: 2rem;
+            opacity: 0.3;
+        }
+
+        .logout-btn {
+            background: white;
+            color: #764ba2;
+            border: 2px solid white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h3>OneHub<span style="color: rgba(255,255,255,0.7);">.</span></h3>
+            <small>Admin Panel</small>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="{% url 'onehub_admin_dashboard' %}" class="active"><i class="fas fa-chart-line"></i>
+                    Dashboard</a></li>
+            <li><a href="{% url 'users_list' %}"><i class="fas fa-users"></i> Users</a></li>
+            <li><a href="{% url 'hotel_owners_list' %}"><i class="fas fa-hotel"></i> Hotel Owners</a></li>
+            <li><a href="{% url 'ecommerce_owners_list' %}"><i class="fas fa-shopping-cart"></i> Ecommerce Owners</a>
+            </li>
+            <li><a href="{% url 'tourist_places_list' %}"><i class="fas fa-map-marker-alt"></i> Tourist Places</a></li>
+            <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h1>Dashboard Overview</h1>
+        </div>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card primary">
+                <i class="fas fa-users stat-card-icon"></i>
+                <div class="stat-card-title">Total Users</div>
+                <div class="stat-card-value">{{ users_count|default:0 }}</div>
+            </div>
+
+            <div class="stat-card info">
+                <i class="fas fa-hotel stat-card-icon"></i>
+                <div class="stat-card-title">Total Hotels</div>
+                <div class="stat-card-value">{{ hotels_count|default:0 }}</div>
+            </div>
+
+            <div class="stat-card warning">
+                <i class="fas fa-clock stat-card-icon"></i>
+                <div class="stat-card-title">Pending Hotels</div>
+                <div class="stat-card-value">{{ pending_hotels|default:0 }}</div>
+            </div>
+
+            <div class="stat-card success">
+                <i class="fas fa-check-circle stat-card-icon"></i>
+                <div class="stat-card-title">Approved Hotels</div>
+                <div class="stat-card-value">{{ approved_hotels|default:0 }}</div>
+            </div>
+
+            <div class="stat-card primary">
+                <i class="fas fa-shopping-cart stat-card-icon"></i>
+                <div class="stat-card-title">Total Ecommerce</div>
+                <div class="stat-card-value">{{ ecommerce_count|default:0 }}</div>
+            </div>
+
+            <div class="stat-card warning">
+                <i class="fas fa-clock stat-card-icon"></i>
+                <div class="stat-card-title">Pending Ecommerce</div>
+                <div class="stat-card-value">{{ pending_ecommerce|default:0 }}</div>
+            </div>
+
+            <div class="stat-card success">
+                <i class="fas fa-check-circle stat-card-icon"></i>
+                <div class="stat-card-title">Approved Ecommerce</div>
+                <div class="stat-card-value">{{ approved_ecommerce|default:0 }}</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card" style="border-radius: 12px; border: none; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);">
+            <div class="card-body p-4">
+                <h5 class="card-title mb-3" style="font-weight: 600; color: #2d3748;">Quick Actions</h5>
+                <a href="{% url 'hotel_owners_list' %}" class="btn btn-primary me-2"
+                    style="border-radius: 8px; padding: 0.6rem 1.5rem;">
+                    <i class="fas fa-hotel me-2"></i>Manage Hotel Owners
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
