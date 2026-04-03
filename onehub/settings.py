@@ -138,3 +138,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 GROQ_API_KEY2 = os.environ.get("GROQ_API_KEY")
 GROQ_MODEL2 = "meta-llama/llama-4-scout-17b-16e-instruct"
 GROQ_API_URL2 = "https://api.groq.com/openai/v1/chat/completions"
+-
