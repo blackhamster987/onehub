@@ -36,6 +36,15 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
+# CSRF Trusted Origins for Railway
+CSRF_TRUSTED_ORIGINS = [
+    'https://' + host for host in ALLOWED_HOSTS if host.strip()
+]
+# Add direct Railway domain format if needed
+railway_url = os.environ.get('RAILWAY_STATIC_URL')
+if railway_url:
+    CSRF_TRUSTED_ORIGINS.append('https://' + railway_url)
+
 
 # Application definition
 
@@ -140,4 +149,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 GROQ_API_KEY2 = os.environ.get("GROQ_API_KEY")
 GROQ_MODEL2 = "meta-llama/llama-4-scout-17b-16e-instruct"
 GROQ_API_URL2 = "https://api.groq.com/openai/v1/chat/completions"
--
