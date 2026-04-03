@@ -1,1 +1,1 @@
-web: gunicorn onehub.wsgi
+web: gunicorn onehub.wsgi --bind 0.0.0.0:8080

@@ -29,7 +29,7 @@ COPY . .
 RUN python manage.py collectstatic --noinput --clear || true
 
 # Expose port
-EXPOSE 8000
+EXPOSE 8080
 
 # Run gunicorn
-CMD ["gunicorn", "onehub.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4", "--timeout", "120"]
+CMD ["gunicorn", "onehub.wsgi:application", "--bind", "0.0.0.0:8080", "--workers", "4", "--timeout", "120"]
